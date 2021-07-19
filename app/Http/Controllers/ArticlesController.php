@@ -10,7 +10,6 @@ class ArticlesController extends Controller
     public function index()
     {
         $articles = Articles::latest()->get();
-
         return view('articles.index', compact('articles'));
     }
 
@@ -27,12 +26,10 @@ class ArticlesController extends Controller
     public function store(StorePostRequest $request)
     {
         $validated = $request->validated();
-
-        if (isset($validated["published"])) {
-            $validated["published"] = 1;
-        }
-
+        $validated["published"] = isset($validated["published"]);
         Articles::create($validated);
+
+        \Session::flash('flash_message', 'Статья создана');
         return redirect('/');
     }
 
@@ -42,30 +39,20 @@ class ArticlesController extends Controller
     }
 
     public function update(Articles $article, StorePostRequest $request)
-//    public function update(Articles $article)
     {
-//        dd($request->only(['slug', 'title', 'preview', 'body', 'published']));
-//        dd($request->all());
-
-//        $validated = request()->all();
-//        dd($validated);
-//        if (isset($validated["published"])) {
-//            $validated["published"] = 1;
-//        } else {
-//            $validated["published"] = 0;
-//        }
         $validated = $request->validated();
-//        dd($validated);
         $validated["published"] = isset($validated["published"]);
-
         $article->update($validated);
-//        dd($article);
+
+        \Session::flash('flash_message', 'Статья изменена');
         return redirect('/');
     }
 
     public function destroy(Articles $article)
     {
         $article->delete();
+
+        \Session::flash('flash_message', 'Статья удалена');
         return redirect('/');
     }
 }
