@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePatchRequest;
 use App\Models\Articles;
 
 class ArticlesController extends Controller
@@ -11,6 +12,12 @@ class ArticlesController extends Controller
     {
         $articles = Articles::latest()->get();
         return view('articles.index', compact('articles'));
+    }
+
+    public function successEdit($success)
+    {
+        $articles = Articles::latest()->get();
+        return view('articles.index', compact('articles', 'success'));
     }
 
     public function show(Articles $article)
@@ -28,9 +35,7 @@ class ArticlesController extends Controller
         $validated = $request->validated();
         $validated["published"] = isset($validated["published"]);
         Articles::create($validated);
-
-        \Session::flash('flash_message', 'Статья создана');
-        return redirect('/');
+        return redirect()->route('successEdit', ['success' => 'Статья создана']);
     }
 
     public function edit(Articles $article)
@@ -38,21 +43,17 @@ class ArticlesController extends Controller
         return view('articles.edit', compact('article'));
     }
 
-    public function update(Articles $article, StorePostRequest $request)
+    public function update(Articles $article, UpdatePatchRequest $request)
     {
         $validated = $request->validated();
         $validated["published"] = isset($validated["published"]);
         $article->update($validated);
-
-        \Session::flash('flash_message', 'Статья изменена');
-        return redirect('/');
+        return redirect()->route('successEdit', ['success' => 'Статья изменена']);
     }
 
     public function destroy(Articles $article)
     {
         $article->delete();
-
-        \Session::flash('flash_message', 'Статья удалена');
-        return redirect('/');
+        return redirect()->route('successEdit', ['success' => 'Статья удалена']);
     }
 }

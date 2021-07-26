@@ -11,6 +11,8 @@
                     Изменение статьи
                 </h3>
 
+                @include('layout.errors')
+
                 <form method="post" action="/articles/{{ $article->slug }}">
                     @csrf
                     @method('PATCH')

@@ -11,9 +11,15 @@
                     Список статей
                 </h3>
 
-                @if (Session::has('flash_message'))
+{{--                @if (Session::has('flash_message'))--}}
+{{--                    <div id="my-alert" class="alert alert-success alert-dismissible fade show" role="alert">--}}
+{{--                        <strong>Успешный успех</strong> {{ Session::get('flash_message') }}--}}
+{{--                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>--}}
+{{--                    </div>--}}
+{{--                @endif--}}
+                @if (isset($success))
                     <div id="my-alert" class="alert alert-success alert-dismissible fade show" role="alert">
-                        <strong>Успешный успех</strong> {{ Session::get('flash_message') }}
+                        <strong>Успешный успех</strong> {{ $success }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif

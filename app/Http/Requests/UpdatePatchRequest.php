@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 
-class StorePostRequest extends FormRequest
+class UpdatePatchRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,7 +28,7 @@ class StorePostRequest extends FormRequest
             'title' => 'required|string|between:5,100',
             'preview' => 'required|string|max:255',
             'body' => 'required|string',
-            'slug' => 'required|regex:/^[a-zA-Z0-9_-]+$/u|unique:articles,slug',
+            'slug' => 'required|regex:/^[a-zA-Z0-9_-]+$/u|unique:articles,slug,' . $this->route()->parameter('article')->id,
             'published' => 'in:on',
         ];
     }

@@ -13,9 +13,11 @@
 
 <script>
     var myAlert = document.querySelector('#my-alert');
-    var bsAlert = new bootstrap.Alert(myAlert);
-    var alert = bootstrap.Alert.getInstance(myAlert);
-    setTimeout(function() {
-        alert.close();
-    }, 3000);
+    if (myAlert != null) {
+        var bsAlert = new bootstrap.Alert(myAlert);
+        var alert = bootstrap.Alert.getInstance(myAlert);
+        setTimeout(function() {
+            alert.close();
+        }, 3000);
+    }
 </script>

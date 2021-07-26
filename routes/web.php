@@ -7,6 +7,7 @@ Route::get('/about', function () {
 });
 
 Route::get('/', 'App\Http\Controllers\ArticlesController@index');
+Route::get('/{success}', 'App\Http\Controllers\ArticlesController@successEdit')->name('successEdit');
 Route::get('/articles/create', 'App\Http\Controllers\ArticlesController@create');
 Route::post('/', 'App\Http\Controllers\ArticlesController@store');
 Route::get('/articles/{article}', 'App\Http\Controllers\ArticlesController@show');
