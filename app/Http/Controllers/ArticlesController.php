@@ -2,25 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePostRequest;
-use App\Http\Requests\UpdatePatchRequest;
-use App\Models\Articles;
+use App\Http\Requests\StoreArticleRequest;
+use App\Http\Requests\UpdateArticleRequest;
+use App\Models\Article;
 
 class ArticlesController extends Controller
 {
     public function index()
     {
-        $articles = Articles::latest()->get();
+        $articles = Article::latest()->get();
         return view('articles.index', compact('articles'));
     }
 
     public function successEdit($success)
     {
-        $articles = Articles::latest()->get();
+        $articles = Article::latest()->get();
         return view('articles.index', compact('articles', 'success'));
     }
 
-    public function show(Articles $article)
+    public function show(Article $article)
     {
         return view('articles.show', compact('article'));
     }
@@ -30,20 +30,20 @@ class ArticlesController extends Controller
         return view('articles.create');
     }
 
-    public function store(StorePostRequest $request)
+    public function store(StoreArticleRequest $request)
     {
         $validated = $request->validated();
         $validated["published"] = isset($validated["published"]);
-        Articles::create($validated);
+        Article::create($validated);
         return redirect()->route('successEdit', ['success' => 'Статья создана']);
     }
 
-    public function edit(Articles $article)
+    public function edit(Article $article)
     {
         return view('articles.edit', compact('article'));
     }
 
-    public function update(Articles $article, UpdatePatchRequest $request)
+    public function update(Article $article, UpdateArticleRequest $request)
     {
         $validated = $request->validated();
         $validated["published"] = isset($validated["published"]);
@@ -51,7 +51,7 @@ class ArticlesController extends Controller
         return redirect()->route('successEdit', ['success' => 'Статья изменена']);
     }
 
-    public function destroy(Articles $article)
+    public function destroy(Article $article)
     {
         $article->delete();
         return redirect()->route('successEdit', ['success' => 'Статья удалена']);

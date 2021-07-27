@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class Articles extends Model
+class Article extends Model
 {
     public function getRouteKeyName()
     {
