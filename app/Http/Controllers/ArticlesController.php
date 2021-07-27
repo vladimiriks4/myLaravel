@@ -2,18 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Articles;
+use App\Http\Requests\StoreArticleRequest;
+use App\Http\Requests\UpdateArticleRequest;
+use App\Models\Article;
 
 class ArticlesController extends Controller
 {
     public function index()
     {
-        $articles = Articles::latest()->get();
-
+        $articles = Article::latest()->get();
         return view('articles.index', compact('articles'));
     }
 
-    public function show(Articles $article)
+    public function successEdit($success)
+    {
+        $articles = Article::latest()->get();
+        return view('articles.index', compact('articles', 'success'));
+    }
+
+    public function show(Article $article)
     {
         return view('articles.show', compact('article'));
     }
@@ -23,21 +30,30 @@ class ArticlesController extends Controller
         return view('articles.create');
     }
 
-    public function store()
+    public function store(StoreArticleRequest $request)
     {
-        $this->validate(request(), [
-            'title' => 'required|string|between:5,100',
-            'preview' => 'required|string|max:255',
-            'body' => 'required|string',
-            'slug' => 'required|unique:articles|regex:/^[a-zA-Z0-9_-]+$/u',
-            'published' => 'in:on',
-        ]);
-        $request = request()->all();
-        if (isset($request["published"])) {
-            $request["published"] = 1;
-        }
+        $validated = $request->validated();
+        $validated["published"] = isset($validated["published"]);
+        Article::create($validated);
+        return redirect()->route('successEdit', ['success' => 'Статья создана']);
+    }
 
-        Articles::create($request);
-        return redirect('/');
+    public function edit(Article $article)
+    {
+        return view('articles.edit', compact('article'));
+    }
+
+    public function update(Article $article, UpdateArticleRequest $request)
+    {
+        $validated = $request->validated();
+        $validated["published"] = isset($validated["published"]);
+        $article->update($validated);
+        return redirect()->route('successEdit', ['success' => 'Статья изменена']);
+    }
+
+    public function destroy(Article $article)
+    {
+        $article->delete();
+        return redirect()->route('successEdit', ['success' => 'Статья удалена']);
     }
 }

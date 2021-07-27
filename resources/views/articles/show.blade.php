@@ -9,6 +9,7 @@
             <div class="col-md-8 blog-main">
                 <h3 class="pb-3 mb-4 font-italic border-bottom">
                     {{ $article->title }}
+                    <a href="/articles/{{$article->slug}}/edit">Изменить</a>
                 </h3>
                 <p class="blog-post-meta">{{ $article->created_at->toFormattedDateString() }}</p>
                 <p>{{ $article->body }}</p>
