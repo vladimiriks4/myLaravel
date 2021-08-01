@@ -35,5 +35,16 @@
            @endif
     >
 </div>
+<div class="form-group">
+    <label for="inputTags" class="form-label">Теги</label>
+    <input type="text" class="form-control" id="inputTags" placeholder="Введите теги"
+           name="tags"
+           @if (isset($article))
+                value="{{
+                    old('tags', $article->tags->pluck('name')->implode(','))
+                }}"
+           @endif
+    >
+</div>
 
 <button type="submit" class="btn btn-primary">{{ isset($article) ? 'Изменить' : 'Создать' }} статью</button>
