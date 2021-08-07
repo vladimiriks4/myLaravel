@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Article;
-use App\Models\Tag;
+use App\Services\TagsSynchronizer;
 
 class ArticlesController extends Controller
 {
@@ -31,11 +31,15 @@ class ArticlesController extends Controller
         return view('articles.create');
     }
 
-    public function store(StoreArticleRequest $request)
+    public function store(StoreArticleRequest $request, TagsSynchronizer $tagsSynchronizer)
     {
         $validated = $request->validated();
         $validated["published"] = isset($validated["published"]);
-        Article::create($validated);
+        $article = Article::create($validated);
+
+        $tags = collect(explode(',', request('tags')))->keyBy(function($item) { return $item;});
+        $tagsSynchronizer->sync($tags, $article);
+
         return redirect()->route('successEdit', ['success' => 'Статья создана']);
     }
 
@@ -44,29 +48,14 @@ class ArticlesController extends Controller
         return view('articles.edit', compact('article'));
     }
 
-    public function update(Article $article, UpdateArticleRequest $request)
+    public function update(Article $article, UpdateArticleRequest $request, TagsSynchronizer $tagsSynchronizer)
     {
         $validated = $request->validated();
         $validated["published"] = isset($validated["published"]);
         $article->update($validated);
 
-        $articleTags = $article->tags->keyBy('name');
-
         $tags = collect(explode(',', request('tags')))->keyBy(function($item) { return $item;});
-
-
-//        $tagsToDetach = $articleTags->diffKeys($tags);
-
-        $syncIds = $articleTags->IntersectByKeys($tags)->pluck('id')->toArray();
-
-        $tagsToAttach = $tags->diffKeys($articleTags);
-
-        foreach ($tagsToAttach as $tag) {
-            $tag = Tag::firstOrCreate(['name' => $tag]);
-            $syncIds[] = $tag->id;
-        }
-
-        $article->tags()->sync($syncIds);
+        $tagsSynchronizer->sync($tags, $article);
 
         return redirect()->route('successEdit', ['success' => 'Статья изменена']);
     }

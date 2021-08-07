@@ -43,6 +43,10 @@
                 value="{{
                     old('tags', $article->tags->pluck('name')->implode(','))
                 }}"
+           @else
+                value="{{
+                    old('tags', null)
+                }}"
            @endif
     >
 </div>
