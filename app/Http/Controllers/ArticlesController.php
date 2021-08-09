@@ -37,8 +37,8 @@ class ArticlesController extends Controller
         $validated["published"] = isset($validated["published"]);
         $article = Article::create($validated);
 
-        $tags = collect(explode(',', request('tags')))->keyBy(function($item) { return $item;});
-        $tagsSynchronizer->sync($tags, $article);
+        $tags = collect(explode(',', request('tags')));
+        $tagsSynchronizer->syncStore($tags, $article);
 
         return redirect()->route('successEdit', ['success' => 'Статья создана']);
     }
@@ -54,8 +54,8 @@ class ArticlesController extends Controller
         $validated["published"] = isset($validated["published"]);
         $article->update($validated);
 
-        $tags = collect(explode(',', request('tags')))->keyBy(function($item) { return $item;});
-        $tagsSynchronizer->sync($tags, $article);
+        $tags = collect(explode(',', request('tags')));
+        $tagsSynchronizer->syncStore($tags, $article);
 
         return redirect()->route('successEdit', ['success' => 'Статья изменена']);
     }
