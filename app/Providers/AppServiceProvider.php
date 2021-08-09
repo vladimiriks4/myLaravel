@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\Tag;
 use App\Services\TagsSynchronizer;
 use App\Services\TagsView;
 use Illuminate\Support\ServiceProvider;
@@ -21,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton(TagsView::class, function(){
-            return new TagsView(new Tag);
+            return new TagsView();
         });
     }
 

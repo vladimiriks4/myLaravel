@@ -38,7 +38,7 @@ class ArticlesController extends Controller
         $article = Article::create($validated);
 
         $tags = collect(explode(',', request('tags')));
-        $tagsSynchronizer->syncStore($tags, $article);
+        $tagsSynchronizer->sync($tags, $article);
 
         return redirect()->route('successEdit', ['success' => 'Статья создана']);
     }
@@ -55,7 +55,7 @@ class ArticlesController extends Controller
         $article->update($validated);
 
         $tags = collect(explode(',', request('tags')));
-        $tagsSynchronizer->syncStore($tags, $article);
+        $tagsSynchronizer->sync($tags, $article);
 
         return redirect()->route('successEdit', ['success' => 'Статья изменена']);
     }
