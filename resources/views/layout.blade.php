@@ -15,9 +15,17 @@
 </head>
 
 <body>
+
     @include('layout.nav')
 
-    @yield('content')
+    <main role="main" class="container">
+        <div class="row">
+
+            @yield('content')
+            @include('layout.sidebar')
+
+        </div>
+    </main>
 
     @include('layout.footer')
 
