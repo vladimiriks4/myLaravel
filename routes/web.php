@@ -19,3 +19,7 @@ Route::delete('/articles/{article}', 'App\Http\Controllers\ArticlesController@de
 
 Route::get('/admin/feedback', 'App\Http\Controllers\FeedbacksController@feedback');
 Route::post('/admin/feedback', 'App\Http\Controllers\FeedbacksController@store');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
