@@ -9,9 +9,17 @@ use App\Services\TagsSynchronizer;
 
 class ArticlesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        //запрет открытия страницы редактирования через мидлвер
+        $this->middleware('can:update,article')->except('index', 'store', 'create');
+    }
+
     public function index()
     {
-        $articles = Article::with('tags')->latest()->get();
+        $articles = auth()->user()->articles()->with('tags')->latest()->get();
+//        $articles = Article::with('tags')->latest()->get();
         return view('articles.index', compact('articles'));
     }
 
@@ -35,6 +43,7 @@ class ArticlesController extends Controller
     {
         $validated = $request->validated();
         $validated["published"] = isset($validated["published"]);
+        $validated['owner_id'] = auth()->id();
         $article = Article::create($validated);
 
         $tags = collect(explode(',', request('tags')));
@@ -45,6 +54,7 @@ class ArticlesController extends Controller
 
     public function edit(Article $article)
     {
+//        $this->authorize('update', $article);
         return view('articles.edit', compact('article'));
     }
 
