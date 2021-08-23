@@ -8,8 +8,6 @@ Route::get('/about', function () {
 
 Auth::routes();
 
-//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
 Route::get('/', 'App\Http\Controllers\ArticlesController@index');
 Route::get('/contacts', 'App\Http\Controllers\FeedbacksController@create');
 Route::get('/{success}', 'App\Http\Controllers\ArticlesController@successEdit')->name('successEdit');

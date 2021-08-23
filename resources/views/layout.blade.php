@@ -23,8 +23,6 @@
 
             @yield('content')
 
-{{--            @include('layout.sidebar')--}}
-
             @section('sidebar')
                 @include('layout.sidebar')
             @show

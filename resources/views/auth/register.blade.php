@@ -1,4 +1,3 @@
-{{--@extends('layouts.app')--}}
 @extends('sidebar_free')
 
 @section('content')

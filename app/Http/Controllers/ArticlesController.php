@@ -11,15 +11,13 @@ class ArticlesController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
-        //запрет открытия страницы редактирования через мидлвер
-        $this->middleware('can:update,article')->except('index', 'store', 'create');
+        $this->middleware('auth')->except('index', 'show');
+        $this->middleware('can:update,article')->except('index', 'store', 'create', 'show');
     }
 
     public function index()
     {
-        $articles = auth()->user()->articles()->with('tags')->latest()->get();
-//        $articles = Article::with('tags')->latest()->get();
+        $articles = Article::with('tags')->latest()->get();
         return view('articles.index', compact('articles'));
     }
 
@@ -54,7 +52,6 @@ class ArticlesController extends Controller
 
     public function edit(Article $article)
     {
-//        $this->authorize('update', $article);
         return view('articles.edit', compact('article'));
     }
 
