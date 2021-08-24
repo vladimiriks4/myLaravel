@@ -9,6 +9,12 @@ use App\Services\TagsSynchronizer;
 
 class ArticlesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except('index', 'show');
+        $this->middleware('can:update,article')->except('index', 'store', 'create', 'show');
+    }
+
     public function index()
     {
         $articles = Article::with('tags')->latest()->get();
@@ -35,6 +41,7 @@ class ArticlesController extends Controller
     {
         $validated = $request->validated();
         $validated["published"] = isset($validated["published"]);
+        $validated['owner_id'] = auth()->id();
         $article = Article::create($validated);
 
         $tags = collect(explode(',', request('tags')));

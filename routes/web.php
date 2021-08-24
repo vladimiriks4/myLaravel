@@ -6,6 +6,8 @@ Route::get('/about', function () {
     return view('about');
 });
 
+Auth::routes();
+
 Route::get('/', 'App\Http\Controllers\ArticlesController@index');
 Route::get('/contacts', 'App\Http\Controllers\FeedbacksController@create');
 Route::get('/{success}', 'App\Http\Controllers\ArticlesController@successEdit')->name('successEdit');
@@ -19,3 +21,5 @@ Route::delete('/articles/{article}', 'App\Http\Controllers\ArticlesController@de
 
 Route::get('/admin/feedback', 'App\Http\Controllers\FeedbacksController@feedback');
 Route::post('/admin/feedback', 'App\Http\Controllers\FeedbacksController@store');
+
+
