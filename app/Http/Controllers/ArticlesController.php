@@ -5,14 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Article;
+use App\Notifications\ArticleChangesNotification;
 use App\Services\TagsSynchronizer;
 
 class ArticlesController extends Controller
 {
+    public $event;
+
     public function __construct()
     {
         $this->middleware('auth')->except('index', 'show');
-        $this->middleware('can:update,article')->except('index', 'store', 'create', 'show');
+        $this->middleware('can:update,article')->except('index', 'store', 'create', 'show', 'successEdit');
     }
 
     public function index()
@@ -47,7 +50,10 @@ class ArticlesController extends Controller
         $tags = collect(explode(',', request('tags')));
         $tagsSynchronizer->sync($tags, $article);
 
-        return redirect()->route('successEdit', ['success' => 'Статья создана']);
+        $this->event = 'Статья создана';
+        $article->owner->notify(new ArticleChangesNotification($article, $this->event));
+
+        return redirect()->route('successEdit', ['success' => $this->event]);
     }
 
     public function edit(Article $article)
@@ -64,12 +70,19 @@ class ArticlesController extends Controller
         $tags = collect(explode(',', request('tags')));
         $tagsSynchronizer->sync($tags, $article);
 
-        return redirect()->route('successEdit', ['success' => 'Статья изменена']);
+        $this->event = 'Статья изменена';
+        $article->owner->notify(new ArticleChangesNotification($article, $this->event));
+
+        return redirect()->route('successEdit', ['success' => $this->event]);
     }
 
     public function destroy(Article $article)
     {
         $article->delete();
-        return redirect()->route('successEdit', ['success' => 'Статья удалена']);
+
+        $this->event = 'Статья удалена';
+        $article->owner->notify(new ArticleChangesNotification($article, $this->event));
+
+        return redirect()->route('successEdit', ['success' => $this->event]);
     }
 }
