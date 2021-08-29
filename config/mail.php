@@ -90,7 +90,7 @@ return [
 
 
     'email_address' => [
-        'address' => env('MAIL_TO'),
+        'address' => env('MAIL_TO', 'aspid@mail.ru'),
     ],
 
     /*
