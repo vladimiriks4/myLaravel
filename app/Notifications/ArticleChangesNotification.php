@@ -23,10 +23,8 @@ class ArticleChangesNotification extends Notification
     {
         $this->messageData['title'] = $changesData;
         $this->messageData['article'] = $article->title;
-        if ($changesData != 'Статья удалена') {
-            $this->messageData['actionText'] = 'Посмотреть статью: ';
-            $this->messageData['url'] = '/articles/' . $article->slug;
-        }
+        $this->messageData['actionText'] = 'Посмотреть статью: ';
+        $this->messageData['url'] = '/articles/' . $article->slug;
     }
 
     /**

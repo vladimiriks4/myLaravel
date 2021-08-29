@@ -53,6 +53,6 @@ class User extends Authenticatable
      */
     public function routeNotificationForMail()
     {
-        return 'aspid@mail.ru';
+        return config('mail.email_address.address');
     }
 }
