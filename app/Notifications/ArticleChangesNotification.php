@@ -13,6 +13,7 @@ class ArticleChangesNotification extends Notification
     use Queueable;
 
     public $messageData;
+    public $article;
 
     /**
      * Create a new notification instance.
@@ -21,10 +22,8 @@ class ArticleChangesNotification extends Notification
      */
     public function __construct(Article $article, $changesData)
     {
-        $this->messageData['title'] = $changesData;
-        $this->messageData['article'] = $article->title;
-        $this->messageData['actionText'] = 'Посмотреть статью: ';
-        $this->messageData['url'] = '/articles/' . $article->slug;
+        $this->messageData = $changesData;
+        $this->article = $article;
     }
 
     /**
@@ -46,16 +45,16 @@ class ArticleChangesNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        if ($this->messageData['title'] != 'Статья удалена'){
+        if ($this->messageData != 'Статья удалена'){
             return (new MailMessage)
-                ->line($this->messageData['title'])
-                ->line($this->messageData['article'])
-                ->action($this->messageData['actionText'], url($this->messageData['url']));
+                ->line($this->messageData)
+                ->line($this->article->title)
+                ->action('Посмотреть статью: ', url('/articles/' . $this->article->slug));
         }
 
         return (new MailMessage)
-            ->line($this->messageData['title'])
-            ->line($this->messageData['article']);
+            ->line($this->messageData)
+            ->line($this->article->title);
     }
 
     /**
