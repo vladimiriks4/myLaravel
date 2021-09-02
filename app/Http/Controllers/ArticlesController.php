@@ -18,10 +18,10 @@ class ArticlesController extends Controller
         $this->middleware('can:update,article')->except('index', 'store', 'create', 'show');
     }
 
-    public function index($success=null)
+    public function index()
     {
         $articles = Article::with('tags')->latest()->get();
-        return view('articles.index', compact('articles', 'success'));
+        return view('articles.index', compact('articles'));
     }
 
     public function show(Article $article)
@@ -47,7 +47,7 @@ class ArticlesController extends Controller
         $this->event = 'Статья создана';
         $article->owner->notify(new ArticleChangesNotification($article, $this->event));
 
-        return redirect()->route('index' , ['success' => $this->event]);
+        return redirect()->route('index')->with('success', $this->event);
     }
 
     public function edit(Article $article)
@@ -67,7 +67,7 @@ class ArticlesController extends Controller
         $this->event = 'Статья изменена';
         $article->owner->notify(new ArticleChangesNotification($article, $this->event));
 
-        return redirect()->route('index' , ['success' => $this->event]);
+        return redirect()->route('index')->with('success', $this->event);
     }
 
     public function destroy(Article $article)
@@ -76,6 +76,6 @@ class ArticlesController extends Controller
 
         $this->event = 'Статья удалена';
         $article->owner->notify(new ArticleChangesNotification($article, $this->event));
-        return redirect()->route('index', ['success' => $this->event]);
+        return redirect()->route('index')->with('success', $this->event);
     }
 }

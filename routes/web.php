@@ -8,7 +8,7 @@ Route::get('/about', function () {
 
 Auth::routes();
 
-Route::get('/{success?}', 'App\Http\Controllers\ArticlesController@index')->name('index');
+Route::get('/', 'App\Http\Controllers\ArticlesController@index')->name('index');
 Route::get('/contacts', 'App\Http\Controllers\FeedbacksController@create');
 Route::get('/articles/tags/{tag}', 'App\Http\Controllers\TagsController@index');
 Route::get('/articles/create', 'App\Http\Controllers\ArticlesController@create');
@@ -20,5 +20,3 @@ Route::delete('/articles/{article}', 'App\Http\Controllers\ArticlesController@de
 
 Route::get('/admin/feedback', 'App\Http\Controllers\FeedbacksController@feedback');
 Route::post('/admin/feedback', 'App\Http\Controllers\FeedbacksController@store');
-
-
