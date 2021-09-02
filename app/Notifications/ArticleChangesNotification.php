@@ -49,7 +49,7 @@ class ArticleChangesNotification extends Notification
             return (new MailMessage)
                 ->line($this->messageData)
                 ->line($this->article->title)
-                ->action('Посмотреть статью: ', url('/articles/' . $this->article->slug));
+                ->action('Посмотреть статью: ', route('show', ['article' => $this->article->slug]));
         }
 
         return (new MailMessage)
