@@ -15,4 +15,9 @@ class Article extends Model
     {
         return $this->belongsToMany(Tag::class);
     }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

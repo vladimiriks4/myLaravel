@@ -45,4 +45,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Article::class, 'owner_id');
     }
+
+    /**
+     * Уведомления роута для mail-канала.
+     *
+     * @return string
+     */
+    public function routeNotificationForMail()
+    {
+        return config('mail.email_address.address');
+    }
 }
