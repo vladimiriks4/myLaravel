@@ -7,7 +7,13 @@
     <div class="col-md-8 blog-main">
         <h3 class="pb-3 mb-4 font-italic border-bottom">
             {{ $article->title }}
-            <a href="/articles/{{$article->slug}}/edit">Изменить</a>
+            @admin()
+                <a href="/admin/articles/{{$article->slug}}/edit">Изменить в админке</a>
+            @else
+                @owner($article)
+                <a href="/articles/{{$article->slug}}/edit">Изменить</a>
+                @endowner
+            @endadmin
         </h3>
 
         @include('articles.tags', ['tags' => $article->tags])

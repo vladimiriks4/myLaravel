@@ -9,13 +9,6 @@
             Список статей
         </h3>
 
-{{--        @if (session('success'))--}}
-{{--            <div id="my-alert" class="alert alert-success alert-dismissible fade show" role="alert">--}}
-{{--                <strong>Успешный успех</strong> {{ session('success') }}--}}
-{{--                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>--}}
-{{--            </div>--}}
-{{--        @endif--}}
-
         @if (session('success'))
             @alert(['type' => 'success'])
             @slot('title')
@@ -26,13 +19,7 @@
         @endif
 
         @foreach($articles as $article)
-            @admin()
             @include('articles.item')
-            @else
-                @owner($article)
-
-                @endowner
-                @endadmin
         @endforeach
     </div><!-- /.blog-main -->
 

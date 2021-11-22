@@ -55,4 +55,9 @@ class User extends Authenticatable
     {
         return config('mail.email_address.address');
     }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 }

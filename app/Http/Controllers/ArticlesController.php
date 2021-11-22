@@ -20,12 +20,15 @@ class ArticlesController extends Controller
 
     public function index()
     {
-        $articles = Article::with('tags')->latest()->get();
+//        $articles = Article::with('tags')->latest()->get();
+        $articles = Article::with('tags')->where('published', 1)->latest()->get();
+//        dd($articles);
         return view('articles.index', compact('articles'));
     }
 
     public function show(Article $article)
     {
+//        dd($article->owner->role);
         return view('articles.show', compact('article'));
     }
 

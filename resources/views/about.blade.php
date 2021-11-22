@@ -11,5 +11,25 @@
         <p>Страница о нас с обычным статичным текстом. Здесь рассказано много интересного о нас</p>
     </div><!-- /.blog-main -->
 
+    <div class="col-md-8 blog-main">
+        @admin()
+            Сработало
+        @endadmin
+    </div>
+
+{{--    @component('components.alert', ['type' => 'success'])--}}
+{{--        @slot('title')--}}
+{{--            Уууууупс--}}
+{{--        @endslot--}}
+{{--        <b>Что-то</b> пошло не так--}}
+{{--    @endcomponent--}}
+
+    @alert(['type' => 'success'])
+        @slot('title')
+            Уууууупс
+        @endslot
+        <b>Что-то</b> пошло не так
+    @endalert
+
 @endsection
 

@@ -2,6 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::get('/hello', function () {
+    return view('hello');
+});
+
+Route::get('/demo', function () {
+    return view('demo');
+});
+
 Route::get('/about', function () {
     return view('about');
 });
@@ -18,5 +26,15 @@ Route::get('/articles/{article}/edit', 'App\Http\Controllers\ArticlesController@
 Route::patch('/articles/{article}', 'App\Http\Controllers\ArticlesController@update');
 Route::delete('/articles/{article}', 'App\Http\Controllers\ArticlesController@destroy');
 
-Route::get('/admin/feedback', 'App\Http\Controllers\FeedbacksController@feedback');
+
+Route::get('/admin', 'App\Http\Controllers\AdminController@index');
+//        ->middleware('auth');
+Route::get('/admin/articles/{article}/edit', 'App\Http\Controllers\AdminController@edit');
+//Route::get('/admin/feedback', 'App\Http\Controllers\FeedbacksController@feedback');
+Route::get('/admin/feedback', 'App\Http\Controllers\FeedbacksController@index')
+        ->middleware('auth');
 Route::post('/admin/feedback', 'App\Http\Controllers\FeedbacksController@store');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
